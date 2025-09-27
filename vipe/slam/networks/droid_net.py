@@ -531,7 +531,7 @@ class DroidNet(nn.Module):
         import gdown
 
         # Download ckpt if needed.
-        ckpt_path = Path(torch.hub.get_dir()) / "droid_slam" / "droid.pth"
+        ckpt_path = Path("checkpoints") / "droid_slam" / "droid.pth"
         if not ckpt_path.exists():
             ckpt_path.parent.mkdir(parents=True, exist_ok=True)
             gdown.download(

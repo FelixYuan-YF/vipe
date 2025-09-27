@@ -850,7 +850,8 @@ def _make_dinov2_model(
         if num_register_tokens > 0:
             url += "_reg4"
         url += "_pretrain.pth"
-        state_dict = torch.hub.load_state_dict_from_url(url, map_location="cpu", progress=False)
+        model_dir = "checkpoints/unidepth"
+        state_dict = torch.hub.load_state_dict_from_url(url, model_dir, map_location="cpu", progress=False)
         info = model.load_state_dict(state_dict, strict=False)
         # print(info)
     elif pretrained is not None:

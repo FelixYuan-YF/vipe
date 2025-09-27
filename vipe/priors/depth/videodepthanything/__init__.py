@@ -45,9 +45,11 @@ class VideoDepthAnythingDepthModel(DepthEstimationModel):
 
         self.is_metric = False
         if model == "vits":
+            self.ckpt_dir = "checkpoints/video_depth_anything"
             self.ckpt_url = "https://huggingface.co/depth-anything/Video-Depth-Anything-Small/resolve/main/video_depth_anything_vits.pth"
             self.use_fp32 = True
         elif model == "vitl":
+            self.ckpt_dir = "checkpoints/video_depth_anything"
             self.ckpt_url = "https://huggingface.co/depth-anything/Video-Depth-Anything-Large/resolve/main/video_depth_anything_vitl.pth"
             self.use_fp32 = False
         else:
@@ -57,7 +59,7 @@ class VideoDepthAnythingDepthModel(DepthEstimationModel):
 
         self.model = VideoDepthAnything(**self.model_config)
         self.model.load_state_dict(
-            torch.hub.load_state_dict_from_url(self.ckpt_url, map_location="cpu"),
+            torch.hub.load_state_dict_from_url(self.ckpt_url, self.ckpt_dir, map_location="cpu"),
             strict=True,
         )
         self.model.cuda().eval()

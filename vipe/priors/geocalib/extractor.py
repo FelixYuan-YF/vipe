@@ -34,7 +34,7 @@ class GeoCalib(nn.Module):
             url = f"https://github.com/cvg/GeoCalib/releases/download/v1.0/geocalib-{weights}.tar"
 
             # load checkpoint
-            model_dir = f"{torch.hub.get_dir()}/geocalib"
+            model_dir = f"checkpoints/geocalib"
             state_dict = torch.hub.load_state_dict_from_url(
                 url, model_dir, map_location="cpu", file_name=f"{weights}.tar"
             )

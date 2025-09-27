@@ -24,6 +24,7 @@ class Detector:
 
         checkpoint = torch.hub.load_state_dict_from_url(
             "https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth",
+            model_dir="checkpoints/grounding_dino",
             map_location="cpu",
         )
         self.gd.load_state_dict(clean_state_dict(checkpoint["model"]), strict=False)
