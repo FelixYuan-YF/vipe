@@ -29,6 +29,19 @@ from .position_encoding import build_position_encoding
 from .swin_transformer import build_swin_transformer
 
 
+MODEL_URLS = {
+    'resnet18': 'https://download.pytorch.org/models/resnet18-f37072fd.pth',
+    'resnet34': 'https://download.pytorch.org/models/resnet34-b627a593.pth',
+    'resnet50': 'https://download.pytorch.org/models/resnet50-0676ba61.pth',
+    'resnet101': 'https://download.pytorch.org/models/resnet101-63fe2227.pth',
+    'resnet152': 'https://download.pytorch.org/models/resnet152-394f9c45.pth',
+    'resnext50_32x4d': 'https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth',
+    'resnext101_32x8d': 'https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth',
+    'wide_resnet50_2': 'https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth',
+    'wide_resnet101_2': 'https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth',
+}
+
+
 class FrozenBatchNorm2d(torch.nn.Module):
     """
     BatchNorm2d where the batch statistics and the affine parameters are fixed.
@@ -146,9 +159,13 @@ class Backbone(BackboneBase):
         if name in ["resnet18", "resnet34", "resnet50", "resnet101"]:
             backbone = getattr(torchvision.models, name)(
                 replace_stride_with_dilation=[False, False, dilation],
-                pretrained=is_main_process(),
+                pretrained=False,
                 norm_layer=batch_norm,
             )
+            state_dict = torch.hub.load_state_dict_from_url(
+                MODEL_URLS[name], model_dir="checkpoints/grounding_dino", map_location="cpu"
+            )
+            backbone.load_state_dict(state_dict)
         else:
             raise NotImplementedError("Why you can get here with name {}".format(name))
         # num_channels = 512 if name in ('resnet18', 'resnet34') else 2048
