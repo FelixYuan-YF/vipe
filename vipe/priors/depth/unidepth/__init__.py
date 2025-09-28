@@ -26,7 +26,7 @@ from .models.unidepthv2.unidepthv2 import Pinhole, UniDepthV2
 class UniDepth2Model(DepthEstimationModel):
     def __init__(self, type: Literal["s", "b", "l"] = "l") -> None:
         super().__init__()
-        self.model = UniDepthV2.from_pretrained(f"lpiccinelli/unidepth-v2-vit{type}14")
+        self.model = UniDepthV2.from_pretrained("checkpoints/unidepth")
         self.model.interpolation_mode = "bilinear"
         self.model = self.model.cuda().eval()
 
